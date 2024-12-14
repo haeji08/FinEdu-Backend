@@ -2,10 +2,9 @@ package org.zerock.finedu.finedubackend.controller;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+import org.zerock.finedu.finedubackend.dto.request.QuizAnswerRequest;
+import org.zerock.finedu.finedubackend.dto.response.QuizAnswerResponse;
 import org.zerock.finedu.finedubackend.dto.response.QuizResponse;
 import org.zerock.finedu.finedubackend.service.QuizService;
 
@@ -22,5 +21,9 @@ public class QuizController {
         return ResponseEntity.ok(quiz);
     }
 
-
+    @PostMapping("/{quizId}/answer")
+    public ResponseEntity<QuizAnswerResponse> submitAnswer(@PathVariable Long quizId, @RequestBody QuizAnswerRequest quizAnswerRequest) {
+        QuizAnswerResponse response = quizService.checkAnswer(quizId, quizAnswerRequest.getUserAnswer());
+        return ResponseEntity.ok(response);
+    }
 }
