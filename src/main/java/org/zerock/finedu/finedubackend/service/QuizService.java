@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.zerock.finedu.finedubackend.dto.request.OpenAIRequest;
+import org.zerock.finedu.finedubackend.dto.response.QuizAnswerResponse;
 import org.zerock.finedu.finedubackend.dto.response.QuizResponse;
 import org.zerock.finedu.finedubackend.entity.NewsEntity;
 import org.zerock.finedu.finedubackend.entity.NewsSummaryEntity;
@@ -14,6 +15,7 @@ import org.zerock.finedu.finedubackend.repository.NewsSummaryRepository;
 import org.zerock.finedu.finedubackend.repository.QuizRepository;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -97,6 +99,7 @@ public class QuizService {
             quiz.setQuestion(question);
             quiz.setOptions(optionsJson);
             quiz.setAnswer(answer);
+            quiz.setExplanation(explanation);
             QuizEntity savedQuiz = quizRepository.save(quiz);
 
             // 6. QuizResponse DTO로 변환
@@ -106,8 +109,7 @@ public class QuizService {
 //                    .summary_id(newsSummary.getSummary_id())    // 요약 ID
                     .quiz_title(savedQuiz.getQuizTitle())
                     .question(savedQuiz.getQuestion())
-                    .options(options) // List<String>으로 반환
-                    .explanation(explanation)
+                    .options(options)
                     .build();
 
             return quizResponse;
@@ -115,5 +117,19 @@ public class QuizService {
         } catch (Exception e) {
             throw new RuntimeException("Failed to parse OpenAI response", e);
         }
+    }
+
+    public QuizAnswerResponse checkAnswer(Long quizId, String userAnswer) {
+        QuizEntity quiz = quizRepository.findById(quizId)
+                .orElseThrow(() -> new RuntimeException("Quiz not found"));
+
+        boolean isCorrect = Integer.parseInt(userAnswer) == quiz.getAnswer();
+        String explanation = quiz.getExplanation();
+
+        return QuizAnswerResponse.builder()
+                .quizId(quizId)
+                .isCorrect(isCorrect)
+                .explanation(explanation)
+                .build();
     }
 }

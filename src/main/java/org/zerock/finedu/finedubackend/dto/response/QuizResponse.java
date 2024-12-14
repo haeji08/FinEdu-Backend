@@ -15,5 +15,4 @@ public class QuizResponse {
     private String quiz_title;   // 퀴즈 제목
     private String question;     // 퀴즈 질문
     private List<String> options; // 선택지
-    private String explanation;
 }

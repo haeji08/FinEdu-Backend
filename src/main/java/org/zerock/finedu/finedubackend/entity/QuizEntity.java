@@ -26,6 +26,9 @@ public class QuizEntity {
     @Column(name = "answer")
     private int answer;
 
+    @Column(name="explanation")
+    private String explanation;
+
     @Column(name = "answer_options", columnDefinition = "json")
     private String options;
 }
