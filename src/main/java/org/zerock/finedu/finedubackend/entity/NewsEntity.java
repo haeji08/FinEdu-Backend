@@ -19,7 +19,7 @@ public class NewsEntity {
     @Column(name = "news_title")
     private String newsTitle;
 
-    @Column(name = "news_content")
+    @Column(name = "news_content", columnDefinition = "TEXT")
     private String newsContent;
 
     @Column(name= "original_url")
