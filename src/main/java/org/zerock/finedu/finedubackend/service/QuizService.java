@@ -25,20 +25,17 @@ public class QuizService {
 
     private final OpenAIService openAIService;
     private final NewsSummaryRepository newsSummaryRepository;
-    private final NewsRepository newsRepository;
     private final QuizRepository quizRepository;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public QuizResponse generateQuiz(Long summaryId) {
         // 1. 뉴스 요약 데이터 조회
-        // Optional<NewsSummaryEntity> optionalSummary = newsSummaryRepository.findById(summaryId);
-        Optional<NewsEntity> optionalSummary = newsRepository.findById(summaryId);
+        Optional<NewsSummaryEntity> optionalSummary = newsSummaryRepository.findById(summaryId);
         if (optionalSummary.isEmpty()) {
             throw new IllegalArgumentException("News Summary not found with ID: " + summaryId);
         }
 
-        //NewsSummaryEntity newsSummary = optionalSummary.get();
-        NewsEntity news = optionalSummary.get();
+        NewsSummaryEntity newsSummary = optionalSummary.get();
 
         // 2. OpenAI에 요청할 프롬프트 생성
         String prompt = String.format(
@@ -61,7 +58,7 @@ public class QuizService {
                         "3. 정답(answer)은 1부터 4 사이의 랜덤한 숫자여야 합니다.\n" +
                         "4. 해설(explanation)은 반드시 '정답은 ~번입니다.'로 시작한 후, 그 이유를 명확하고 구체적으로 설명해야 합니다. 문장은 항상 '입니다'로 끝나야 합니다.\n" +
                         "5. 결과는 JSON 형식 그대로 반환해야 합니다.",
-                news.getNewsContent()
+                newsSummary.getSummaryContent()
         );
 
         // 3. OpenAI API 호출
@@ -77,9 +74,9 @@ public class QuizService {
 
             // 필드 추출
             String question = responseJson.path("question").asText();
-            JsonNode optionsNode = responseJson.path("options"); // 선택지
-            int answer = responseJson.path("answer").asInt(); // 정답 인덱스
-            String explanation = responseJson.path("explanation").asText(); // 해설
+            JsonNode optionsNode = responseJson.path("options");
+            int answer = responseJson.path("answer").asInt();
+            String explanation = responseJson.path("explanation").asText();
 
             // optionsNode를 List<String>으로 변환
             List<String> options = new ArrayList<>();
@@ -94,8 +91,8 @@ public class QuizService {
 
             // 5. QuizEntity 저장
             QuizEntity quiz = new QuizEntity();
-//            quiz.setNewsSummary(newsSummary);
-            quiz.setQuizTitle(news.getNewsTitle());
+            quiz.setNewsSummary(newsSummary);
+            quiz.setQuizTitle(newsSummary.getSummaryTitle());
             quiz.setQuestion(question);
             quiz.setOptions(optionsJson);
             quiz.setAnswer(answer);
@@ -105,8 +102,8 @@ public class QuizService {
             // 6. QuizResponse DTO로 변환
             QuizResponse quizResponse = QuizResponse.builder()
                     .quiz_id(savedQuiz.getQuiz_id())
-                    .news_id(news.getNews_id()) // 뉴스 ID
-//                    .summary_id(newsSummary.getSummary_id())    // 요약 ID
+                    .news_id(newsSummary.getNews().getNews_id()) // 뉴스 ID
+                    .summary_id(newsSummary.getSummary_id())    // 요약 ID
                     .quiz_title(savedQuiz.getQuizTitle())
                     .question(savedQuiz.getQuestion())
                     .options(options)
