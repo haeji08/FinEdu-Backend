@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://finedu-db.cj4ey4aiefr4.ap-northeast-2.rds.amazonaws.com:3306/finedu-db?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
+    username: admin
+    password: cloudsys-finedu
+  jpa:
+    database-platform: org.hibernate.dialect.MySQLDialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.MySQLDialect
+
+openai:
+  api-key:
+  model: gpt-3.5-turbo-0125
+
+server:
+  port: 8082
+
+
