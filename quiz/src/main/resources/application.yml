@@ -1,9 +1,12 @@
+logging:
+  level:
+    org.zerock.finedu: DEBUG
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://mysql:3306/finedu?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
-    username: ${SPRING_DATASOURCE_USERNAME:finedu_user}
-    password: ${SPRING_DATASOURCE_PASSWORD:finedu_password}
+    url: jdbc:mysql://mysql:3306/finedu?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${MYSQL_USER:finedu_user}
+    password: ${MYSQL_PASSWORD:finedu_password}
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
@@ -16,7 +19,9 @@ spring:
 
 openai:
   api-key: ${OPENAI_API_KEY}
+  model: gpt-3.5-turbo-0125
 
 server:
-  port: ${SERVER_PORT:8081}
+  port: ${SERVER_PORT:8082}
   address: 0.0.0.0
+
