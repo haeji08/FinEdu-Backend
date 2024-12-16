@@ -2,7 +2,7 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-COPY build/libs/summarizer-0.0.1-SNAPSHOT-plain.jar app.jar
+COPY build/libs/summarizer-0.0.1-SNAPSHOT.jar app.jar
 
 # 환경 변수 설정
 ENV MYSQL_USER=admin

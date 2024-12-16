@@ -2,7 +2,7 @@ spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://finedu-db.cj4ey4aiefr4.ap-northeast-2.rds.amazonaws.com:3306/finedu-db?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
-    username: ${MYSQL_USERNAME}
+    username: ${MYSQL_USER}
     password: ${MYSQL_PASSWORD}
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
@@ -20,4 +20,5 @@ openai:
 
 server:
   port: ${SERVER_PORT:8081}
+  address: 0.0.0.0
 
