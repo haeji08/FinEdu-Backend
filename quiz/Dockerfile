@@ -1,14 +1,23 @@
-FROM openjdk:17-jdk-slim
+FROM --platform=linux/arm64/v8 eclipse-temurin:17
 
 WORKDIR /app
 
-COPY build/libs/quiz-0.0.1-SNAPSHOT.jar app.jar
+# backend 디렉토리의 파일들을 복사
+COPY build.gradle .
+COPY settings.gradle .
+COPY gradlew .
+COPY gradle/ gradle/
+COPY common/ common/
+COPY quiz/ quiz/
 
-# 환경 변수 설정
-ENV MYSQL_USER=admin
-ENV MYSQL_PASSWORD=mysql_password
-ENV OPENAI_API_KEY=openai_api_key
-ENV SERVER_PORT=8082
+# Gradle 실행 권한 설정
+RUN chmod +x ./gradlew
 
-# 애플리케이션 실행
+# 프로젝트 빌드
+RUN ./gradlew :quiz:build -x test
+
+# JAR 파일 이름 변경
+RUN mv quiz/build/libs/*.jar app.jar
+
+EXPOSE 8082
 ENTRYPOINT ["java", "-jar", "app.jar"]

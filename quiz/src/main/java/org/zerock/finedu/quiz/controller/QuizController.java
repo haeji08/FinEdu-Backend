@@ -8,6 +8,8 @@ import org.zerock.finedu.quiz.dto.response.QuizAnswerResponse;
 import org.zerock.finedu.quiz.dto.response.QuizResponse;
 import org.zerock.finedu.quiz.service.QuizService;
 
+import java.util.Map;
+
 @RestController
 @RequestMapping("/quiz")
 @RequiredArgsConstructor
@@ -16,10 +18,12 @@ public class QuizController {
     private final QuizService quizService;
 
     @PostMapping("/generate")
-    public ResponseEntity<QuizResponse> generateQuiz(@RequestParam Long summaryId) {
+    public ResponseEntity<QuizResponse> generateQuiz(@RequestBody Map<String, Long> payload) {
+        Long summaryId = payload.get("news_id");
         QuizResponse quiz = quizService.generateQuiz(summaryId);
         return ResponseEntity.ok(quiz);
     }
+
 
     @PostMapping("/{quizId}/answer")
     public ResponseEntity<QuizAnswerResponse> submitAnswer(@PathVariable Long quizId, @RequestBody QuizAnswerRequest quizAnswerRequest) {

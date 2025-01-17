@@ -2,4 +2,3 @@ rootProject.name = 'FinEdu-Backend'
 include 'common'
 include 'summarizer'
 include 'quiz'
-

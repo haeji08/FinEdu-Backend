@@ -1,9 +1,18 @@
+logging:
+  level:
+#    org.springframework.batch: DEBUG
+    org.zerock.finedu: DEBUG
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://finedu-db.cj4ey4aiefr4.ap-northeast-2.rds.amazonaws.com:3306/finedu-db?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://mysql:3306/finedu?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${MYSQL_USER:finedu_user}
+    password: ${MYSQL_PASSWORD:finedu_password}
+#  batch:
+#    job:
+#      enabled: true  # 애플리케이션 시작 시 Batch Job 실행
+#    jdbc:
+#      initialize-schema: always  # Spring Batch 테이블 자동 생성
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true

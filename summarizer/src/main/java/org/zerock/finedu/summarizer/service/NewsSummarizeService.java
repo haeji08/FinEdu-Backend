@@ -4,13 +4,11 @@ import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 import org.zerock.finedu.common.dto.request.OpenAIRequest;
 import org.zerock.finedu.common.entity.NewsEntity;
-import org.zerock.finedu.common.entity.NewsSummaryEntity;
 import org.zerock.finedu.common.repository.NewsRepository;
-import org.zerock.finedu.common.repository.NewsSummaryRepository;
 import org.zerock.finedu.common.service.OpenAIService;
 
 import java.util.List;
@@ -20,12 +18,13 @@ import java.util.List;
 public class NewsSummarizeService {
 
     private final NewsRepository newsRepository;
-    private final NewsSummaryRepository summaryRepository;
     private final OpenAIService openAIService;
+    private final SummarizeTransactionalService transactionalService;
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-    @Transactional
-    public void summarizeUnprocessedNews(int batchSize) {
+    @Scheduled(cron = "0 0 * * * *")
+    public void summarizeUnprocessedNews() {
+        int batchSize = 100;
         PageRequest pageRequest = PageRequest.of(0, batchSize);
         List<NewsEntity> unprocessedNews = newsRepository.findByNewsSummaryIsNullOrderByCrawlTimeDesc(pageRequest);
 
@@ -51,23 +50,12 @@ public class NewsSummarizeService {
                 JsonNode responseJson = objectMapper.readTree(response);
 
                 // 요약 엔티티 생성 및 저장
-                NewsSummaryEntity summary = new NewsSummaryEntity();
-                summary.setNews(news);
-                summary.setSummaryTitle(generateSummaryTitle(news.getNewsTitle()));
-                summary.setSummaryContent(responseJson.get("summary").asText());
-                summary.setKeyword(responseJson.get("keywords").asText());
-
-                summaryRepository.save(summary);
+                transactionalService.saveSummary(news, responseJson);
 
             } catch (Exception e) {
                 // 개별 뉴스 처리 실패 시 로그 기록 후 다음 뉴스 처리 진행
                 System.err.println("Failed to summarize news ID: " + news.getNews_id() + ". Error: " + e.getMessage());
             }
         }
-    }
-
-    private String generateSummaryTitle(String newsTitle) {
-        // 뉴스 제목에서 [] 등의 불필요한 태그 제거
-        return newsTitle.replaceAll("\\[.*?\\]", "").trim();
     }
 }

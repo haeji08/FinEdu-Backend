@@ -1,9 +1,12 @@
+logging:
+  level:
+    org.zerock.finedu: DEBUG
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://finedu-db.cj4ey4aiefr4.ap-northeast-2.rds.amazonaws.com:3306/finedu-db?useSSL=false&serverTimezone=UTC&characterEncoding=UTF-8
-    username: ${MYSQL_USER}
-    password: ${MYSQL_PASSWORD}
+    url: jdbc:mysql://mysql:3306/finedu?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
+    username: ${MYSQL_USER:finedu_user}
+    password: ${MYSQL_PASSWORD:finedu_password}
   jpa:
     database-platform: org.hibernate.dialect.MySQLDialect
     show-sql: true
@@ -21,5 +24,4 @@ openai:
 server:
   port: ${SERVER_PORT:8082}
   address: 0.0.0.0
-
 
