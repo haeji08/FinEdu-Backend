@@ -13,6 +13,7 @@ repositories {
 
 dependencies {
     implementation project(':common')
+    implementation 'org.springframework:spring-context'
 // MySQL Connector 의존성
     runtimeOnly 'mysql:mysql-connector-java:8.0.33'
 
