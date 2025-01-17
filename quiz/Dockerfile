@@ -22,7 +22,7 @@ RUN mv quiz/build/libs/*.jar app.jar
 # cryptography 패키지 설치
 RUN apt-get update && apt-get install -y \
     python3-pip \
-    && pip3 install cryptography
+    && pip3 install --break-system-packages cryptography
 
 EXPOSE 8082
 ENTRYPOINT ["java", "-jar", "app.jar"]
