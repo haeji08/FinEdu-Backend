@@ -32,9 +32,6 @@ public class NewsSummarizeService {
 
         // OpenAI API 키 확인
         log.info("OpenAI API Key 설정 확인: {}", openAIService != null ? "설정됨" : "설정안됨");
-//        int batchSize = 100;
-//        PageRequest pageRequest = PageRequest.of(0, batchSize);
-//        List<NewsEntity> unprocessedNews = newsRepository.findByNewsSummaryIsNullOrderByCrawlTimeDesc(pageRequest);
         List<NewsEntity> unprocessedNews = newsRepository.findByNewsSummaryIsNullOrderByCrawlTimeDesc(PageRequest.of(0, 100));
         log.info("DB 조회 시간: {}ms", System.currentTimeMillis() - start);
         log.info("처리되지 않은 {}개의 뉴스 발견!!!!!", unprocessedNews.size());
