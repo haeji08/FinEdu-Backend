@@ -3,6 +3,9 @@ logging:
 #    org.springframework.batch: DEBUG
     org.zerock.finedu: DEBUG
 spring:
+  task:
+    scheduling:
+      enabled: true
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://mysql:3306/finedu?useSSL=false&allowPublicKeyRetrieval=true&serverTimezone=UTC&characterEncoding=UTF-8
@@ -30,4 +33,11 @@ openai:
 server:
   port: ${SERVER_PORT:8081}
   address: 0.0.0.0
+  tomcat:
+    uri-encoding: UTF-8
+  servlet:
+    encoding:
+      charset: UTF-8
+      enabled: true
+      force: true
 

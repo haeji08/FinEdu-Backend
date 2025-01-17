@@ -19,5 +19,10 @@ RUN ./gradlew :summarizer:build -x test
 # JAR 파일 이름 변경
 RUN mv summarizer/build/libs/*.jar app.jar
 
+# cryptography 패키지 설치
+RUN apt-get update && apt-get install -y \
+    python3-pip \
+    && pip3 install cryptography
+
 EXPOSE 8081
 ENTRYPOINT ["java", "-jar", "app.jar"]
