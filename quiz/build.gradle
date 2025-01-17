@@ -1,5 +1,6 @@
 bootJar {
     enabled = true
+    mainClass.set('org.zerock.finedu.quiz.QuizApplication')
 }
 
 jar {
