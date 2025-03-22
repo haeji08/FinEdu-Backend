@@ -5,7 +5,7 @@ Cloud System 2024-2 team project: Cloud native educational finance platform | Ba
 | 박해지 | 박유진 | 유채민 |
 | --- | --- | --- |
 | <p align="center"><img src="https://i.postimg.cc/NFWsq98V/image.jpg" width="150" height="150"/></p>| <p align="center"><img src="https://i.postimg.cc/HkSMcHmL/img-character01.png" width="125" height="150"/></p> | <p align="center"><img src="https://i.postimg.cc/HkSMcHmL/img-character01.png" width="125" height="150"/></p> |
-| 숙명여자대학교 컴퓨터과학과 4학년 | 숙명여자대학교 컴퓨터과학과 4학년 | 숙명여자대학교 컴퓨터과학과 4학년 |
+| 숙명여자대학교 컴퓨터과학과 | 숙명여자대학교 컴퓨터과학과 | 숙명여자대학교 컴퓨터과학과 |
 
 ## Background
 With the increasing complexity of financial markets and products, financial literacy has become essential, especially among younger generations. However, the overwhelming flow of financial news makes it difficult for individuals to keep up and understand key information.
